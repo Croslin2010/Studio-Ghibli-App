@@ -5,6 +5,10 @@ infoPromise.then(
         {
             console.log("info", info)
             d3.select("#header").text ("Avaliable Movies:");
+            displayTitle(info);
+            displayMovieInfo(info);
+            
+            
         },
         function(error)
         {
@@ -12,10 +16,16 @@ infoPromise.then(
             d3.select("#header").text("No Current Movies");
         })
 
-var displayStuff=function(movie)
+var displayTitle=function(movie)
     {
         var box=d3.select('#clickerBox')
             box.append("div")
             .text("Title: " + movie.title);
     }
-displayStuff(movie);
+
+var displayMovieInfo=function(MovieInfo)
+{
+    var box=d3.select('#IDInfoBox')
+        box.append("div")
+        .text("ID: "+ MovieInfo.id)
+}
