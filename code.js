@@ -1,31 +1,51 @@
-var infoPromise=d3.json("https://ghibliapi.herokuapp.com/films/2baf70d1-42bb-4437-b551-e5fed5a87abe")
-
+var infoPromise=d3.json("https://ghibliapi.herokuapp.com/films")
 infoPromise.then(
         function(info)
         {
+            d3.select("#header").text ("Welcome to Movie Explorer");
             console.log("info", info)
-            d3.select("#header").text ("Avaliable Movies:");
-            displayTitle(info);
-            displayMovieInfo(info);
-            
+            displayTitles(info)
+           
+           
             
         },
         function(error)
         {
-            console.log("none", error)
             d3.select("#header").text("No Current Movies");
         })
 
-var displayTitle=function(movie)
-    {
-        var box=d3.select('#clickerBox')
-            box.append("div")
-            .text("Title: " + movie.title);
-    }
-
-var displayMovieInfo=function(MovieInfo)
+var displayTitles = function(info)
 {
-    var box=d3.select('#IDInfoBox')
-        box.append("div")
-        .text("ID: "+ MovieInfo.id)
-}
+
+   d3.select("#clickerBox")
+    .selectAll("ul")
+    .data(info)
+    .enter()
+    .append("li")
+    .text(function(d)
+        {
+            return d.title
+        })
+    .on("click", function(d){
+           d3.selectAll("#IDInfoBox *")
+           .remove()
+            return displayInfo(d)
+        })
+ }
+
+
+var displayInfo = function(movie)
+  {
+   var box =d3.select("#IDInfoBox")
+      box.append("p")
+      .text("Description: " +movie.description)
+      box.append("p")
+      .text("Director:"+movie.director)
+      box.append("p")
+      .text("Producer:" +movie.producer)
+      box.append("p")
+      .text("Release Date:" +movie.release_date)
+      box.append("p")
+      .text("Rotten Tomatoes Score: " +movie.rt_score)
+  }
+
